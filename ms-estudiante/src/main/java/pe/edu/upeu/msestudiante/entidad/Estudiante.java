@@ -10,13 +10,14 @@ import org.hibernate.annotations.CreationTimestamp;
 import pe.edu.upeu.msestudiante.Dto.EstudianteDto;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
 @NoArgsConstructor // Si necesitas constructor sin argumentos
 @AllArgsConstructor // Si quieres un constructor con todos los argumentos
 @Builder
-@Table(name = "kevinraf_estudiante")
+@Table(name = "estudiante")
 public class Estudiante {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,6 +51,7 @@ public class Estudiante {
 
     @CreationTimestamp
     @Column(name = "fechaRegistro", updatable = false)
+    @JsonFormat(pattern = "dd-MM-yyyy") // Ejemplo de formato
     private LocalDate fechaRegistro;
 
     // ¡AÑADE ESTE CONSTRUCTOR!
