@@ -10,7 +10,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import pe.edu.upeu.msestudiante.Dto.EstudianteDto;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -54,7 +53,7 @@ public class Estudiante {
     @JsonFormat(pattern = "dd-MM-yyyy") // Ejemplo de formato
     private LocalDate fechaRegistro;
 
-    // ¡AÑADE ESTE CONSTRUCTOR!
+    // ¡CONSTRUCTOR!
     public Estudiante(EstudianteDto dto, Apoderado apoderado) {
         this.nombre = dto.getNombre();
         this.apellidoPaterno = dto.getApellidoPaterno();

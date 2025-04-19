@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: ms-registry-service
+  profiles:
+    active: development
+  config:
+    import: optional:configserver:http://kevinraf:futurojuntos<3@localhost:7070
