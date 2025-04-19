@@ -2,13 +2,21 @@ package pe.edu.upeu.msestudiante.entidad;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import pe.edu.upeu.msestudiante.Dto.EstudianteDto;
 
 import java.time.LocalDate;
 
 @Entity
 @Data
+@NoArgsConstructor // Si necesitas constructor sin argumentos
+@AllArgsConstructor // Si quieres un constructor con todos los argumentos
+@Builder
+@Table(name = "kevinraf_estudiante")
 public class Estudiante {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,4 +51,18 @@ public class Estudiante {
     @CreationTimestamp
     @Column(name = "fechaRegistro", updatable = false)
     private LocalDate fechaRegistro;
+
+    // ¡AÑADE ESTE CONSTRUCTOR!
+    public Estudiante(EstudianteDto dto, Apoderado apoderado) {
+        this.nombre = dto.getNombre();
+        this.apellidoPaterno = dto.getApellidoPaterno();
+        this.apellidoMaterno = dto.getApellidoMaterno();
+        this.celular = dto.getCelular();
+        this.correo = dto.getCorreo();
+        this.fechaNacimiento = dto.getFechaNacimiento();
+        this.apoderado = apoderado;
+        // La fecha de registro se maneja con @CreationTimestamp
+    }
+
+
 }

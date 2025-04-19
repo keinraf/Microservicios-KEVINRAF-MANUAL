@@ -1,13 +1,21 @@
 package pe.edu.upeu.msestudiante.entidad;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 
-@Entity
+
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
+@Entity
+@Table(name = "kevinraf_apoderado")
 public class Apoderado {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

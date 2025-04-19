@@ -2,7 +2,7 @@ server:
   port: 8081
 spring:
   application:
-    name: ms-catalogo-service
+    name: ms-estudiante-service
 
   datasource:
     url: jdbc:mysql://localhost:3306/ms-estudiante-kr
