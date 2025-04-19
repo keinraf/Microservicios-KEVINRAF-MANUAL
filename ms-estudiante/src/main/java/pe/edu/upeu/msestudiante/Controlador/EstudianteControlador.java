@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/estudiante")
+@RequestMapping("/estudiantes")
 public class EstudianteControlador {
     @Autowired
     private EstudianteServicio estudianteServicio;

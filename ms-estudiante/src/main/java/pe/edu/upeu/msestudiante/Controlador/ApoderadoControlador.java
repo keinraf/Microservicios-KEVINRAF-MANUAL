@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/apoderado")
+@RequestMapping("/apoderados")
 public class ApoderadoControlador {
 
     @Autowired
