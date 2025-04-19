@@ -1,0 +1,21 @@
+server:
+  port: 7070
+
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          # ruta de tuuuu repositorio git :V
+          uri: https://github.com/keinraf/Microservicios-KEVINRAF-MANUAL.git
+          searchPaths: config-data
+          default-label: principalkr
+  security:
+    user:
+      #recordar este apartado para tus microservicios :V
+      #Pon el usuario que desees
+      name: kevinraf
+      #pon la contrasena que desees
+      password: futurojuntos<3

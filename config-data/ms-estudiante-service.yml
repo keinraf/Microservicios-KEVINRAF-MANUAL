@@ -1,0 +1,29 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: ms-catalogo-service
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/ms-estudiante-kr
+    username: root
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /doc/swagger-ui.html
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8090/eureka
+  instance:
+    hostname: localhost
