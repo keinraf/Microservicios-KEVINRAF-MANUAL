@@ -12,15 +12,15 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: ms-estudiante-service-estudiantes
+        - id: ms-estudiante-service
           uri: lb://ms-estudiante-service
           predicates:
             - Path=/estudiantes/**
-        - id: ms-estudiante-service-apoderados
+        - id: ms-estudiante-service
           uri: lb://ms-estudiante-service
           predicates:
             - Path=/apoderados/**
-        - id: ms-insidencia-service-insidencias
+        - id: ms-insidencia-service
           uri: lb://ms-insidencia-service
           predicates:
             - Path=/insidencias/**    -
