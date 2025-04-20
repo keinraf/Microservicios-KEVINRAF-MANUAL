@@ -9,6 +9,7 @@ import pe.edu.upeu.msinsidencia.Repositorio.InsidenciaRepositorio;
 import pe.edu.upeu.msinsidencia.Servicio.InsidenciaService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class InsidenciaImplemento implements InsidenciaService {
@@ -25,21 +26,35 @@ public class InsidenciaImplemento implements InsidenciaService {
 
     @Override
     public Insidencia Buscar(Long id){
-        Insidencia insidencia = insidenciaRepositorio.findById(id).get();
-        insidencia.setEstudianteDto(estudianteFeign.buscarEstudiante(insidencia.getEstudianteId()).getBody());
-        return insidenciaRepositorio.findById(id).get();
+        Optional<Insidencia> insidenciaOptional = insidenciaRepositorio.findById(id);
+        if (insidenciaOptional.isPresent()) {
+            Insidencia insidencia = insidenciaOptional.get();
+            try {
+                EstudianteDto estudianteDto = estudianteFeign.buscarEstudiante(insidencia.getEstudianteId()).getBody();
+                insidencia.setEstudianteDto(estudianteDto);
+            } catch (Exception e) {
+                // Log the error or handle the case where the student service is unavailable
+                System.err.println("Error al obtener información del estudiante: " + e.getMessage());
+                insidencia.setEstudianteDto(null); // Or a default EstudianteDto
+            }
+            return insidencia;
+        }
+        return null; // Or throw an exception
     }
 
     @Override
     public Insidencia Guardar(Insidencia insidencia){
         return insidenciaRepositorio.save(insidencia);
     }
+
     @Override
     public Insidencia Actualizar(Insidencia insidencia){
         return insidenciaRepositorio.save(insidencia);
     }
+
     @Override
     public Insidencia Eliminar(Insidencia insidencia){
-        return insidenciaRepositorio.save(insidencia);
+        insidenciaRepositorio.delete(insidencia); // Usamos delete() para eliminar
+        return insidencia; // Puedes retornar void si prefieres
     }
 }

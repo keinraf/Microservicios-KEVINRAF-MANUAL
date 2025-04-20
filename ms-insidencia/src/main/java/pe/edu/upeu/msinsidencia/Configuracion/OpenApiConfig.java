@@ -18,4 +18,10 @@ public class OpenApiConfig {
                 .license(new License().name("Apache 2.0").url("http://springdoc.org"))
         );
     }
+
+    ///{
+    ///    "descripcion": "Este es un problema de prueba.",
+    ///    "estudianteId": 1
+    ///} para el post osea añadir y editar
+
 }
