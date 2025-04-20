@@ -33,13 +33,12 @@ public class InsidenciaImplemento implements InsidenciaService {
                 EstudianteDto estudianteDto = estudianteFeign.buscarEstudiante(insidencia.getEstudianteId()).getBody();
                 insidencia.setEstudianteDto(estudianteDto);
             } catch (Exception e) {
-                // Log the error or handle the case where the student service is unavailable
                 System.err.println("Error al obtener información del estudiante: " + e.getMessage());
-                insidencia.setEstudianteDto(null); // Or a default EstudianteDto
+                insidencia.setEstudianteDto(null);
             }
             return insidencia;
         }
-        return null; // Or throw an exception
+        return null;
     }
 
     @Override

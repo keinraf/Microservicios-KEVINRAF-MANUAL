@@ -35,7 +35,4 @@ public class Insidencia {
     private Long estudianteId;
     @Transient
     private EstudianteDto estudianteDto;
-
-
-
 }
