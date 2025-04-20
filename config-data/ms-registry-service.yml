@@ -1,10 +1,12 @@
 server:
-  port: 8090
+  port: 8090  # El puerto en el que el servidor Eureka estará disponible. Este es el puerto en el que se escucharán las solicitudes para la gestión de los microservicios registrados.
+
 eureka:
   instance:
-    hostname: localhost
+    hostname: localhost  # El nombre del host del servidor Eureka. En este caso es 'localhost', ya que el servidor Eureka se está ejecutando en la misma máquina.
+
   client:
-    registerWithEureka: false
-    fetchRegistry: false
+    registerWithEureka: false  # Indica si este servicio se debe registrar a sí mismo en Eureka. En este caso, se establece como 'false' porque este es el servidor Eureka, no un microservicio.
+    fetchRegistry: false  # Indica si el cliente debe obtener el registro de servicios de Eureka. 'false' significa que no se obtienen registros de otros microservicios ya que este es el servidor Eureka.
     serviceUrl:
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/  # La URL del servidor Eureka. Se utiliza para acceder al servidor y gestionar los servicios registrados. Utiliza el valor de 'hostname' y 'port' de la configuración.

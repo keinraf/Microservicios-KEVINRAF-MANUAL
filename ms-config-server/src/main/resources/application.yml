@@ -1,21 +1,27 @@
 server:
-  port: 7070
+  port: 7070  # Puerto donde se levantará el Config Server
 
 spring:
   application:
-    name: config-server
+    name: config-server  # Nombre de la aplicación (útil si usas Eureka u otros servicios)
+
   cloud:
     config:
       server:
         git:
-          # ruta de tuuuu repositorio git :V
           uri: https://github.com/keinraf/Microservicios-KEVINRAF-MANUAL.git
+          # URI del repositorio Git donde están los archivos de configuración centralizados
+          # Este repositorio debe contener archivos como application.yml, ms-insidencia-service.yml, etc.
+
           searchPaths: config-data
+          # Carpeta dentro del repositorio donde buscará los archivos .yml
+          # Ejemplo: config-data/ms-insidencia-service.yml
+
           default-label: principalkr
+          # Rama por defecto (branch) desde donde leerá la configuración
+          # Asegúrate que la rama exista en el repositorio
+
   security:
     user:
-      #recordar este apartado para tus microservicios :V
-      #Pon el usuario que desees
-      name: kevinraf
-      #pon la contrasena que desees
-      password: futurojuntos<3
+      name: kevinraf           # Usuario básico para proteger el Config Server
+      password: futurojuntos<3 # Contraseña (puede ser cifrada en producción)

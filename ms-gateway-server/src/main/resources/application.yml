@@ -1,8 +1,11 @@
 spring:
   application:
-    name: ms-registry-service
-  profiles:
-    active: development
-  config:
-    import: optional:configserver:http://kevinraf:futurojuntos<3@localhost:7070
+    name: ms-gateway-service  # El nombre del microservicio. En este caso, es 'ms-gateway-service', lo que facilita su identificación en un entorno distribuido.
 
+  profiles:
+    active: development  # Define el perfil activo de la aplicación. En este caso, se establece como 'development', lo que significa que se usará la configuración para un entorno de desarrollo.
+
+  config:
+    import: optional:configserver:http://kevinraf:futurojuntos<3@localhost:7070  # Indica que el microservicio debe cargar configuraciones desde un servidor de configuración (Config Server) en la URL proporcionada.
+    # 'optional:' significa que si no se puede conectar con el servidor de configuración, el microservicio no fallará, y continuará funcionando con su configuración local por defecto.
+    # El URL incluye credenciales (usuario: 'kevinraf' y contraseña: 'futurojuntos<3') para acceder al servidor de configuración que se ejecuta en localhost en el puerto 7070.

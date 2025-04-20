@@ -1,7 +1,11 @@
 spring:
   application:
-    name: ms-registry-service
+    name: ms-registry-service  # Nombre del microservicio. En este caso, es 'ms-registry-service'. Es utilizado por Spring para identificar el servicio en un entorno distribuido.
+
   profiles:
-    active: development
+    active: development  # Define el perfil activo para la configuración. En este caso, se está utilizando el perfil 'development', lo que significa que este servicio usará la configuración específica para el entorno de desarrollo.
+
   config:
-    import: optional:configserver:http://kevinraf:futurojuntos<3@localhost:7070
+    import: optional:configserver:http://kevinraf:futurojuntos<3@localhost:7070  # Configura la importación de propiedades desde un servidor de configuración externo (en este caso, un Config Server que se ejecuta en http://localhost:7070).
+    # El prefijo 'optional:' indica que si no se encuentra el servidor de configuración, no se lanzará un error.
+    # El URL incluye credenciales (nombre de usuario y contraseña) para acceder al servidor de configuración.

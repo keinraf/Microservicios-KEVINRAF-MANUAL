@@ -1,7 +1,13 @@
 spring:
   application:
-    name: ms-insidencia-service
+    name: ms-insidencia-service  # Nombre del microservicio (usado por Spring Cloud y Eureka si se configura)
+
   profiles:
-    active: development
+    active: development          # Perfil activo que se usará (puede haber archivos como application-development.yml)
+
   config:
     import: optional:configserver:http://kevinraf:futurojuntos<3@localhost:7070
+    # Importa configuraciones externas desde un servidor de configuración Spring Cloud Config
+    # - `optional:` evita error si no encuentra el config server
+    # - `kevinraf:futurojuntos<3` son las credenciales (usuario:contraseña)
+    # - `localhost:7070` es la dirección donde está corriendo el config server

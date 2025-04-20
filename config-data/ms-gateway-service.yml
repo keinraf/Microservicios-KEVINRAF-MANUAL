@@ -1,26 +1,43 @@
 server:
-  port: 8085
+  port: 8085  # Puerto donde estará corriendo el API Gateway
 
 eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8090/eureka
+      # URL del servidor de Eureka donde el API Gateway se registrará y podrá descubrir otros servicios
+      # Eureka se usa para registrar y descubrir microservicios de forma automática
+
   instance:
-    hostname: localhost
+    hostname: localhost  # El nombre del host donde se está ejecutando el servicio Eureka
+    # Esto se puede usar para configurar la instancia en caso de que esté detrás de un balanceador de carga
 
 spring:
   cloud:
     gateway:
+      # Configuración del API Gateway de Spring Cloud para enrutar las solicitudes a otros microservicios
       routes:
         - id: ms-estudiante-service
           uri: lb://ms-estudiante-service
+          # `lb://` indica que se usará un servicio de balanceo de carga (como Eureka)
+          # El Gateway enviará las solicitudes a `ms-estudiante-service` basado en el nombre del servicio registrado en Eureka
+
           predicates:
             - Path=/estudiantes/**
+            # Predicado que dice que cualquier ruta que empiece con /estudiantes/ será redirigida a `ms-estudiante-service`
+
         - id: ms-estudiante-service
           uri: lb://ms-estudiante-service
+          # Esto se repite para otra ruta similar, probablemente para otro endpoint relacionado con apoderados
+
           predicates:
             - Path=/apoderados/**
+            # Predicado que indica que las solicitudes con el path /apoderados/ serán redirigidas al servicio `ms-estudiante-service`
+
         - id: ms-insidencia-service
           uri: lb://ms-insidencia-service
+          # Similar al anterior, enruta las solicitudes al servicio `ms-insidencia-service` registrado en Eureka
+
           predicates:
-            - Path=/insidencias/**    -
+            - Path=/insidencias/**
+            # Predicado que indica que las solicitudes con el path /insidencias/ serán redirigidas al servicio `ms-insidencia-service`

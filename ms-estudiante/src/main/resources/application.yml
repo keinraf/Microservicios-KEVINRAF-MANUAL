@@ -1,7 +1,12 @@
 spring:
     application:
-        name: ms-estudiante-service
+        name: ms-estudiante-service  # Nombre de la aplicación, útil para identificar el servicio en un entorno distribuido (por ejemplo, en Spring Cloud)
+
     profiles:
-        active: development
+        active: development  # Perfil activo para este entorno, en este caso "development" (desarrollo). Puede cambiar a "production" en un entorno de producción
+
     config:
-        import: optional:configserver:http://kevinraf:futurojuntos<3@localhost:7070
+        import: optional:configserver:http://kevinraf:futurojuntos<3@localhost:7070  # URL de un servidor de configuración externo (Spring Cloud Config Server)
+        # "optional" significa que la aplicación puede arrancar sin este servidor de configuración si no está disponible
+        # La URL incluye credenciales para la autenticación básica (usuario: "kevinraf" y contraseña: "futurojuntos<3")
+        # El servidor de configuración está corriendo en "localhost" en el puerto 7070

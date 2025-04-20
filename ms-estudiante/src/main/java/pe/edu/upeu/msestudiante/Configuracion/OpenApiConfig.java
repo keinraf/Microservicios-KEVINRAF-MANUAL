@@ -6,16 +6,20 @@ import io.swagger.v3.oas.models.info.License;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+@Configuration  // Anotación que indica que esta clase es una clase de configuración de Spring.
 public class OpenApiConfig {
-    @Bean
+
+    @Bean  // Anotación que marca este método como un "Bean" que será gestionado por el contenedor de Spring.
     public OpenAPI customOpenAPI() {
-        return new OpenAPI().info(new Info()
-                .title("OPEN API MICROSERVICIO DE ESTUDIANTE")
-                .version("0.0.1")
-                .description("Servicios web Estudiantes")
-                .termsOfService("http://swagger.io/terms")
-                .license(new License().name("Apache 2.0").url("http://springdoc.org"))
-        );
+        return new OpenAPI()  // Se crea una nueva instancia de OpenAPI que describe la API del microservicio.
+                .info(new Info()  // Se proporciona información general sobre la API.
+                        .title("OPEN API MICROSERVICIO DE ESTUDIANTE")  // Título de la API.
+                        .version("0.0.1")  // Versión de la API.
+                        .description("Servicios web Estudiantes")  // Descripción de lo que hace la API.
+                        .termsOfService("http://swagger.io/terms")  // Enlace a los términos de servicio.
+                        .license(new License()  // Información de la licencia de la API.
+                                .name("Apache 2.0")  // Nombre de la licencia.
+                                .url("http://springdoc.org"))  // URL de la licencia.
+                );
     }
 }

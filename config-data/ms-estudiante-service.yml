@@ -1,29 +1,32 @@
 server:
-  port: 8081
+  port: 8081  # El puerto en el que se ejecutará el microservicio ms-estudiante-service
+
 spring:
   application:
-    name: ms-estudiante-service
+    name: ms-estudiante-service  # Nombre de la aplicación, utilizado para registro en Eureka o cualquier otro servicio de descubrimiento
 
   datasource:
-    url: jdbc:mysql://localhost:3306/ms-estudiante-kr
-    username: root
-    password:
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/ms-estudiante-kr  # URL de la base de datos MySQL, conectándose a la base de datos `ms-estudiante-kr` en el puerto 3306
+    username: root  # Usuario para la conexión a la base de datos
+    password:  # Aquí va la contraseña del usuario de la base de datos
+    driver-class-name: com.mysql.cj.jdbc.Driver  # El driver JDBC para MySQL, necesario para que Spring Data JPA se conecte a MySQL
 
   jpa:
     hibernate:
-      ddl-auto: update
-    show-sql: true
+      ddl-auto: update  # Configuración de Hibernate. `update` actualizará el esquema de la base de datos si es necesario sin perder datos
+    show-sql: true  # Mostrar las consultas SQL generadas por Hibernate en los logs para fines de depuración
 
 springdoc:
   api-docs:
-    enabled: true
+    enabled: true  # Habilitar la generación de documentación API automática (usando Swagger)
+
   swagger-ui:
-    enabled: true
-    path: /doc/swagger-ui.html
+    enabled: true  # Habilitar la interfaz de usuario de Swagger para visualizar y probar la API
+    path: /doc/swagger-ui.html  # Ruta en la que se podrá acceder a Swagger UI
+
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8090/eureka
+      defaultZone: http://localhost:8090/eureka  # URL del servidor Eureka donde este servicio se registrará y podrá descubrir otros servicios
   instance:
-    hostname: localhost
+    hostname: localhost  # El nombre de host para la instancia del microservicio cuando se registre en Eureka
