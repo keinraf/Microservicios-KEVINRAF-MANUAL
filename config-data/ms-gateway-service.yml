@@ -20,3 +20,7 @@ spring:
           uri: lb://ms-estudiante-service
           predicates:
             - Path=/apoderados/**
+        - id: ms-insidencia-service-insidencias
+          uri: lb://ms-insidencia-service
+          predicates:
+            - Path=/insidencias/**    -
