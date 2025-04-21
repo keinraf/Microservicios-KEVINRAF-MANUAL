@@ -1,5 +1,11 @@
 package pe.edu.upeu.msestudiante.Controlador;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,49 +20,73 @@ import pe.edu.upeu.msestudiante.entidad.Estudiante;
 import java.util.List;
 import java.util.Optional;
 
-@RestController  // Indica que esta clase es un controlador REST.
-@RequestMapping("/estudiantes")  // Define la ruta base para las solicitudes a este controlador.
+@RestController
+@RequestMapping("/estudiantes")
 public class EstudianteControlador {
 
-    @Autowired  // Inyecta el servicio de estudiantes automáticamente.
+    @Autowired
     private EstudianteServicio estudianteServicio;
 
-    @Autowired  // Inyecta el servicio de apoderados automáticamente.
+    @Autowired
     private ApoderadoServicio apoderadoServicio;
 
     // Obtener todos los estudiantes
-    @GetMapping  // Define el método para manejar las solicitudes GET a "/estudiantes".
+    @Operation(summary = "Obtener todos los estudiantes", description = "Devuelve una lista de todos los estudiantes.")
+    @ApiResponse(responseCode = "200", description = "Lista de estudiantes obtenida exitosamente.",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Estudiante.class)))
+    @GetMapping
     public ResponseEntity<List<Estudiante>> listarEstudiante() {
-        List<Estudiante> estudiantes = estudianteServicio.Listar();  // Obtiene la lista de estudiantes.
-        return new ResponseEntity<>(estudiantes, HttpStatus.OK);  // Devuelve la lista de estudiantes con el código HTTP 200 (OK).
+        List<Estudiante> estudiantes = estudianteServicio.Listar();
+        return new ResponseEntity<>(estudiantes, HttpStatus.OK);
     }
 
     // Obtener un estudiante por ID
-    @GetMapping("/{id}")  // Define el método para manejar las solicitudes GET a "/estudiantes/{id}".
-    public ResponseEntity<Estudiante> buscarEstudiante(@PathVariable Long id) {
-        Optional<Estudiante> estudiante = estudianteServicio.Buscar(id);  // Busca un estudiante por su ID.
-        return estudiante.map(ResponseEntity::ok)  // Si se encuentra el estudiante, devuelve el objeto con un código HTTP 200.
-                .orElseGet(() -> ResponseEntity.notFound().build());  // Si no se encuentra, devuelve un código HTTP 404 (No encontrado).
+    @Operation(summary = "Obtener estudiante por ID", description = "Devuelve un estudiante según el ID proporcionado.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Estudiante encontrado.",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Estudiante.class))),
+            @ApiResponse(responseCode = "404", description = "Estudiante no encontrado.", content = @Content)
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<Estudiante> buscarEstudiante(@Parameter(description = "ID del estudiante a buscar", required = true) @PathVariable Long id) {
+        Optional<Estudiante> estudiante = estudianteServicio.Buscar(id);
+        return estudiante.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Crear un nuevo estudiante y asociar un apoderado (relación Many to One)
-    @PostMapping  // Define el método para manejar las solicitudes POST a "/estudiantes".
-    public ResponseEntity<Estudiante> guardarEstudiante(@RequestBody EstudianteDto estudianteRequest) {
-        Optional<Apoderado> apoderadoOptional = apoderadoServicio.Buscar(estudianteRequest.getApoderadoId());  // Busca el apoderado por su ID.
+    @Operation(summary = "Crear nuevo estudiante", description = "Crea un nuevo estudiante y lo asocia a un apoderado.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Estudiante creado exitosamente.",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Estudiante.class))),
+            @ApiResponse(responseCode = "404", description = "Apoderado no encontrado.", content = @Content)
+    })
+    @PostMapping
+    public ResponseEntity<Estudiante> guardarEstudiante(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Objeto EstudianteDto con los datos del estudiante y el ID del apoderado.", required = true) @RequestBody EstudianteDto estudianteRequest) {
+        Optional<Apoderado> apoderadoOptional = apoderadoServicio.Buscar(estudianteRequest.getApoderadoId());
         if (apoderadoOptional.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);  // Si el apoderado no se encuentra, devuelve un código HTTP 404 (No encontrado).
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        Estudiante estudiante = new Estudiante(estudianteRequest, apoderadoOptional.get());  // Crea un nuevo estudiante con el apoderado.
-        Estudiante nuevoEstudiante = estudianteServicio.Guardar(estudiante);  // Guarda el nuevo estudiante.
-        return new ResponseEntity<>(nuevoEstudiante, HttpStatus.CREATED);  // Devuelve el estudiante creado con el código HTTP 201 (Creado).
+        Estudiante estudiante = new Estudiante(estudianteRequest, apoderadoOptional.get());
+        Estudiante nuevoEstudiante = estudianteServicio.Guardar(estudiante);
+        return new ResponseEntity<>(nuevoEstudiante, HttpStatus.CREATED);
     }
 
     // Actualizar o modificar un estudiante existente
-    @PutMapping("/{id}")  // Define el método para manejar las solicitudes PUT a "/estudiantes/{id}".
-    public ResponseEntity<Estudiante> modificarEstudiante(@PathVariable Long id, @RequestBody EstudianteUpdateDto estudianteRequest) {
-        Optional<Estudiante> estudianteExistenteOptional = estudianteServicio.Buscar(id);  // Busca el estudiante existente por su ID.
+    @Operation(summary = "Actualizar estudiante", description = "Actualiza los datos de un estudiante existente.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Estudiante actualizado exitosamente.",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Estudiante.class))),
+            @ApiResponse(responseCode = "400", description = "Solicitud incorrecta (por ejemplo, apoderado no encontrado).", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Estudiante no encontrado.", content = @Content)
+    })
+    @PutMapping("/{id}")
+    public ResponseEntity<Estudiante> modificarEstudiante(
+            @Parameter(description = "ID del estudiante a actualizar", required = true) @PathVariable Long id,
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Objeto EstudianteUpdateDto con los datos a actualizar del estudiante.", required = true) @RequestBody EstudianteUpdateDto estudianteRequest) {
+        Optional<Estudiante> estudianteExistenteOptional = estudianteServicio.Buscar(id);
         if (estudianteExistenteOptional.isEmpty()) {
-            return ResponseEntity.notFound().build();  // Si el estudiante no se encuentra, devuelve un código HTTP 404.
+            return ResponseEntity.notFound().build();
         }
         Estudiante estudianteExistente = estudianteExistenteOptional.get();
 
@@ -84,20 +114,23 @@ public class EstudianteControlador {
         if (estudianteRequest.getApoderadoId() != null) {
             Optional<Apoderado> apoderadoOptional = apoderadoServicio.Buscar(estudianteRequest.getApoderadoId());
             if (apoderadoOptional.isEmpty()) {
-                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);  // Si el apoderado no se encuentra, devuelve un código HTTP 400 (Solicitud incorrecta).
+                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
             }
-            estudianteExistente.setApoderado(apoderadoOptional.get());  // Asocia el nuevo apoderado al estudiante.
+            estudianteExistente.setApoderado(apoderadoOptional.get());
         }
 
-        Estudiante estudianteModificado = estudianteServicio.Modificar(id, estudianteExistente);  // Modifica el estudiante en la base de datos.
-        return estudianteModificado != null ? ResponseEntity.ok(estudianteModificado)  // Si la modificación es exitosa, devuelve el estudiante modificado con código HTTP 200.
-                : ResponseEntity.notFound().build();  // Si no se encuentra el estudiante, devuelve un código HTTP 404 (No encontrado).
+        Estudiante estudianteModificado = estudianteServicio.Modificar(id, estudianteExistente);
+        return estudianteModificado != null ? ResponseEntity.ok(estudianteModificado)
+                : ResponseEntity.notFound().build();
     }
 
     // Eliminar un estudiante por ID
-    @DeleteMapping("/{id}")  // Define el método para manejar las solicitudes DELETE a "/estudiantes/{id}".
-    public ResponseEntity<Estudiante> eliminarEstudiante(@PathVariable Long id) {
-        estudianteServicio.Eliminar(id);  // Llama al servicio para eliminar el estudiante por su ID.
-        return ResponseEntity.noContent().build();  // Devuelve un código HTTP 204 (Sin contenido) si la eliminación es exitosa.
+    @Operation(summary = "Eliminar estudiante", description = "Elimina un estudiante según el ID proporcionado.")
+    @ApiResponse(responseCode = "204", description = "Estudiante eliminado exitosamente.")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Estudiante> eliminarEstudiante(@Parameter(description = "ID del estudiante a eliminar", required = true) @PathVariable Long id) {
+        estudianteServicio.Eliminar(id);
+        return ResponseEntity.noContent().build();
     }
 }
+
