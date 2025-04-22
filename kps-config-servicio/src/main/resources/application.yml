@@ -7,9 +7,9 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/keinraf/KPS-MICROSERVICES.git
+          uri: https://github.com/keinraf/Microservicios-KEVINRAF-MANUAL.git
           searchPaths: config-data
-          default-label: main
+          default-label: MainKevin
   security:
     user:
       name: kevinraf

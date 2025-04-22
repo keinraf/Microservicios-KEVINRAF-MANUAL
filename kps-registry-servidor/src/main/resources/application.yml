@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: kps-registry-servidor
+  profiles:
+    active: development
+  config:
+    import: optional:configserver:http://kevinraf:root@localhost:7070
