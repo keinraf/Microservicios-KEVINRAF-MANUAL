@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: kps-estudiante-servicio
+  profiles:
+    active: development
+  config:
+    import: optional:configserver:http://kevinraf:root@localhost:7070

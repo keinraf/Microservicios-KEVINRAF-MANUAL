@@ -1,0 +1,16 @@
+server:
+  port: 7070
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/keinraf/KPS-MICROSERVICES.git
+          searchPaths: config-data
+          default-label: main
+  security:
+    user:
+      name: kevinraf
+      password: root
