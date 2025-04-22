@@ -2,7 +2,7 @@ server:
   port: 7070
 spring:
   application:
-    name: config-server
+    name: kps-config-servicio
   cloud:
     config:
       server:

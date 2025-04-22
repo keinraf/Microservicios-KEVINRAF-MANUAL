@@ -4,4 +4,4 @@ spring:
   profiles:
     active: development
   config:
-    import: optional:configserver:http://kevinraf:root@localhost:7070
+    import: optional:kps-config-servicio:http://kevinraf:root@localhost:7070
